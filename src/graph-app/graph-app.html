@@ -1,13 +1,140 @@
 <link rel="import" href="../../bower_components/polymer/polymer-element.html">
 
+<link rel="import" href="../../bower_components/font-roboto/roboto.html">
+
+<link rel="import" href="../../bower_components/app-route/app-route.html">
+<link rel="import" href="../../bower_components/app-route/app-location.html">
+
+<link rel="import" href="../../bower_components/app-layout/app-toolbar/app-toolbar.html">
+<link rel="import" href="../../bower_components/app-layout/app-header/app-header.html">
+<link rel="import" href="../../bower_components/app-layout/app-header-layout/app-header-layout.html">
+
+<link rel="import" href="../../bower_components/app-layout/app-drawer/app-drawer.html">
+<link rel="import" href="../../bower_components/app-layout/app-drawer-layout/app-drawer-layout.html">
+
+<link rel="import" href="../../bower_components/paper-styles/color.html">
+<link rel="import" href="../../bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../../bower_components/paper-item/paper-icon-item.html">
+<link rel="import" href="../../bower_components/paper-dialog/paper-dialog.html">
+<link rel="import" href="../../bower_components/paper-button/paper-button.html">
+
+<link rel="import" href="../../bower_components/iron-pages/iron-pages.html">
+<link rel="import" href="../../bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="../../bower_components/iron-icons/social-icons.html">
+
+<link rel="import" href="../../bower_components/polymerfire/firebase.html">
+
+<link rel="import" href="../../bower_components/neon-animation/animations/scale-up-animation.html">
+<link rel="import" href="../../bower_components/neon-animation/animations/fade-out-animation.html">
+
 <dom-module id="graph-app">
   <template>
     <style>
       :host {
+        --base-color: #f1f1f1;
+        --graph-color-white: #f1f1f1;
+        --graph-color-black: #f1f1f1;
+        --primary-color: var(--paper-light-blue-800);
+        --secondary-color: var(--paper-blue-grey-200);
         display: block;
+        margin: 0;
+        font-family: 'Roboto', 'Noto', sans-serif;
+        background: var(--base-color);
       }
+
+      app-toolbar {
+        background-color: var(--primary-color);
+        color: var(--graph-color-white);
+      }
+
+      app-drawer-layout: not([narrow]) [drawer-toggle] {
+        display: none;
+      }
+
+      app-toolbar a,
+      app-toolbar a:hover,
+      app-toolbar a:visited {
+        text-decoration: none;
+        color: white;
+      }
+
     </style>
-    <h2>Hello [[prop1]]!</h2>
+
+    <app-location route="{{route}}" use-hash-as-path></app-location>
+    <app-route route="{{route}}" 
+      pattern="/:module" 
+      data="{{routeData}}" 
+      tail="{{subroute}}">
+    </app-route>
+
+    <paper-dialog id="accountdialog">
+      <h2>Create new account</h2>
+      <div>
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit, 
+        sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
+      </div>
+      <div class="buttons">
+        <paper-button on-tap="openSignin" dialog-dismiss>
+          <iron-icon icon="icons:perm-identity"></iron-icon>
+          Already exists
+        </paper-button>
+        <paper-button on-tap="openRegistration" dialog-confirm raised autofocus>
+          <iron-icon icon="social:person-add"></iron-icon>
+          Create new
+        </paper-button>
+      </div>
+    </paper-dialog>
+
+    <app-drawer-layout fullbleed narrow=narrow="">
+      <app-header-layout has-scrolling-region>
+        <app-header slot="header" fixed shadow>
+          <app-toolbar toobar-content>
+            <paper-icon-button icon="menu" drawer-toggle></paper-icon-button>
+
+            <div main-title="">[[appName]]</div>
+
+            <!-- Toolbar -->
+            <!-- Annonymous -->
+            <template is="dom-if" if="[[!isAuthenticated]]">
+              <paper-icon-button id="signin" 
+                on-tap="accountDialogOpen"
+                icon="icons:account-circle" 
+                title="Register / Login">
+              </paper-icon-button>
+            </template>
+
+            <!-- Authorized -->
+            <template is="dom-if" if="[[isAuthenticated]]">
+              <a href="[[pathPrefix]]project/new">
+                <paper-icon-button id="newproject" 
+                  icon="icons:add-circle-outline" 
+                  title="New Project">
+                </paper-icon-button>
+              </a>
+
+              <a href="[[pathPrefix]]settings">
+                <paper-icon-button id="newproject" 
+                  icon="icons:settings" 
+                  title="Settings">
+                </paper-icon-button>
+              </a>
+            </template>
+
+          </app-toolbar>
+        </app-header>
+
+        [[routeData.module]]
+
+        [[isAccountManipulation]]
+
+        <iron-pages selected="[[routeData.module]]" attr-for-selected="account-page">
+          <div account-page="account">SIGNIN</div>
+        </iron-pages>
+
+      </app-header-layout>
+    </app-drawer-layout>
+
+
   </template>
 
   <script>
@@ -19,14 +146,68 @@
       static get is() { return 'graph-app'; }
       static get properties() {
         return {
-          prop1: {
+          route: {
+            type: Object,
+            notify: true,
+            observer: 'routeUpdate',
+          },
+          subroute: {
+            type: Object,
+            notify: true,
+          },
+          pathPrefix: {
             type: String,
-            value: 'graph-app'
-          }
+            value: '#/',
+          },
+          routeData: {
+            type: Object,
+            notify: true,
+          },
+          appName: {
+            type: String,
+            value: 'Graph'
+          },
+          isAuthenticated: {
+            type: Boolean,
+            value: false,
+          },
+          isAccountManipulation: {
+            type: Boolean,
+            value: false,
+            notify: true,
+          },
         };
       }
-    }
 
+      static get observers() {
+        return [
+          'accountpageAppear(route.module)'
+        ]
+      }
+
+      ready() {
+        super.ready()
+        console.log(this.routeData.module);
+        console.log('account' == this.routeData.module)
+      }
+
+      routeUpdate(e) {
+        console.log(e)
+      }
+
+      accountDialogOpen() {
+        this.$.accountdialog.open()
+      }
+
+      openSignin(e) {
+        this.set('route.path', '/account/signin')
+      }
+
+      openRegistration(e) {
+        this.set('route.path', '/account/register')
+      }
+
+    }
     window.customElements.define(GraphApp.is, GraphApp);
   </script>
 </dom-module>
