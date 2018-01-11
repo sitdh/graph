@@ -1,0 +1,57 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+
+<link rel="import" href="../../bower_components/app-route/app-route.html">
+<link rel="import" href="../../bower_components/app-route/app-location.html">
+
+<link rel="import" href="../../bower_components/iron-pages/iron-pages.html">
+
+<link rel="import" href="../../src/account-manager/user-signin.html">
+<link rel="import" href="../../src/account-manager/create-account.html">
+
+<link rel="import" href="../../src/module-missing/module-missing.html">
+
+<dom-module id="account-manager">
+  <template>
+    <style is="custom-style">
+      :host {
+      }
+    </style>
+    <app-route route="{{route}}" 
+      pattern="/:module" 
+      data="{{routeData}}" 
+      tail="{{subroute}}">
+    </app-route>
+
+    <iron-pages selected="[[routeData.module]]" 
+      attr-for-selected="account-module"
+      fallback-selection="module-missing">
+      <div account-module="[[routeData.module]]">[[routeData.module]]....</div>
+    </iron-pages>
+    
+    <iron-pages selected="register" 
+      attr-for-selected="account-module"
+      fallback-selection="module-missing">
+      <create-account account-module="register" route="[[subroute]]"></create-account>
+      <user-signin account-module="signin" route="[[subroute]]"></user-signin>
+      <module-missing account-module="module-missing" route="[[subroute]]"></module-missing>
+    </iron-pages>
+
+  </template>
+  <script>
+    class AccountManagerElement extends Polymer.Element {
+      static get is() { return 'account-manager' }
+      static get properties() {
+        return {
+          route: {
+            type: Object,
+          },
+          routeData: {
+            type: Object,
+          },
+        }
+      }
+    }
+
+    window.customElements.define(AccountManagerElement.is, AccountManagerElement);
+  </script>
+</dom-module>

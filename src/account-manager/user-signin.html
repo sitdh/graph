@@ -1,0 +1,27 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+
+<dom-module id="user-signin">
+  <template>
+    <style>
+    </style>
+
+    User Signin
+
+  </template>
+  <script>
+    class UserSigninElement extends Polymer.Element {
+      static get is() { return 'user-signin' }
+      static get properties() {
+        return { 
+          route: {
+            type: Object,
+          },
+        }
+      }
+    }
+
+    window.customElements.define(UserSigninElement.is, UserSigninElement);
+  </script>
+</dom-module>
+
+
