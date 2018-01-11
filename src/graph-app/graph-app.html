@@ -27,6 +27,8 @@
 <link rel="import" href="../../bower_components/neon-animation/animations/scale-up-animation.html">
 <link rel="import" href="../../bower_components/neon-animation/animations/fade-out-animation.html">
 
+<link rel="import" href="../../src/account-manager/account-manager.html">
+
 <dom-module id="graph-app">
   <template>
     <style>
@@ -40,6 +42,13 @@
         margin: 0;
         font-family: 'Roboto', 'Noto', sans-serif;
         background: var(--base-color);
+      }
+
+      .app-content {
+        display: block;
+        margin: 0 auto;
+        height: auto;
+        background-color: var(--secondary-color);
       }
 
       app-toolbar {
@@ -58,6 +67,27 @@
         color: white;
       }
 
+      /** Responsive **/
+      @media screen and (min-width: 1200px) {
+        .app-content { width: 1200px; }
+      }
+
+      @media screen and (min-width: 992px) and (max-width: 1199px) {
+        .app-content { width: 992px; }
+      }
+
+      @media screen and (min-width: 768px) and (max-width: 991px) {
+        .app-content { width: 768px; }
+      }
+
+      @media screen and (min-width: 576px) and (max-width: 767px) {
+        .app-content { width: 576px; }
+      }
+
+      @media screen and (max-width: 575px) {
+        .app-content { width: 575px; }
+      }
+
     </style>
 
     <app-location route="{{route}}" use-hash-as-path></app-location>
@@ -70,8 +100,8 @@
     <paper-dialog id="accountdialog">
       <h2>Create new account</h2>
       <div>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit, 
-        sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit, <br />
+        sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. <br />
       </div>
       <div class="buttons">
         <paper-button on-tap="openSignin" dialog-dismiss>
@@ -123,13 +153,11 @@
           </app-toolbar>
         </app-header>
 
-        [[routeData.module]]
-
-        [[isAccountManipulation]]
-
-        <iron-pages selected="[[routeData.module]]" attr-for-selected="account-page">
-          <div account-page="account">SIGNIN</div>
-        </iron-pages>
+        <div class="app-content">
+          <iron-pages selected="[[routeData.module]]" attr-for-selected="account-page">
+            <account-manager account-page="account" route="[[subroute]]"></account-manager>
+          </iron-pages>
+        </div>
 
       </app-header-layout>
     </app-drawer-layout>
