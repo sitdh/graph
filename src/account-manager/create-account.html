@@ -1,5 +1,13 @@
 <link rel="import" href="../../bower_components/polymer/polymer-element.html">
 
+<link rel="import" href="../../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../../bower_components/paper-button/paper-button.html">
+
+<link rel="import" href="../../bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="../../bower_components/iron-icon/iron-icon.html">
+
+<link rel="import" href="../../bower_components/app-route/app-route.html">
+
 <link rel="import" href="../../src/account-manager/account-style.html">
 
 <dom-module id="create-account">
@@ -7,30 +15,86 @@
 
     <style>
       :host {
-        width: 100%;
         display: flex;
-        flex-flow: row;
+        flex-direction: column;
+        flex-basis: 100%;
       }
 
       .ca {
         margin: 2px 3px;
       }
 
-
       .header-title {
         font-size: 1.5em;
         font-weight: bold;
+        padding-top: 10px;
+        padding-bottom: 10px;
       }
 
       .separator {
-        margin: 0 5px;
-        width: 100%;
+        padding-bottom: 10px;
+        margin-bottom: 10px;
+        border-bottom: 0.35px solid var(--primary-color);
       }
+
+      .input-field {
+        margin: auto 10px;
+      }
+
+      .action-section {
+        display: flex;
+        flex-flow: row;
+        flex-basis: 100%;
+      }
+
+      .action-section paper-button {
+        flex-basis: 50%;
+        margin: 10px;
+      }
+
+      paper-button.primary {
+        background-color: var(--primary-color);
+        color: white;
+      }
+
+      paper-button.secondary {
+        background-color: var(--secondary-color);
+        color: white;
+      }
+
     </style>
 
+    <app-route route="{{route}}" 
+      pattern="/:module" 
+      data="{{routeData}}" 
+      tail="{{subroute}}">
+    </app-route>
+
     <div class="ca header-title">Create account</div>
-    <div class="ca description">Login with github's account</div>
-    
+    <div class="ca description separator">Already have account exist? <a href="[[pathPrefix]][[route.prefix]]" on-tap="openGithubAuth">Let's signin</a></div>
+
+    <paper-input id="username" label="Username" class="input-field">
+      <iron-icon icon="perm-identity" slot="prefix"></iron-icon>
+    </paper-input>
+
+    <paper-input id="password" label="Password" type="password" class="input-field">
+      <iron-icon icon="star" slot="prefix"></iron-icon>
+    </paper-input>
+
+    <paper-input id="confirmPassword" label="Confirm Password" type="password" class="input-field">
+      <iron-icon icon="star" slot="prefix"></iron-icon>
+    </paper-input>
+
+    <paper-input id="emailAddress" label="Email Address" class="input-field">
+      <iron-icon icon="mail" slot="prefix"></iron-icon>
+    </paper-input>
+
+    <div class="separator"></div>
+
+    <div class="action-section">
+      <paper-button id="cancelPressed" raised class="secondary" on-tap="getBackHome">Cancel</paper-button>
+      <paper-button id="registerPressed" raised class="primary" on-tap="performCreateNewAccount">Register</paper-button>
+    </div>
 
   </template>
   <script>
@@ -38,9 +102,41 @@
       static get is() { return 'create-account' }
       static get properties() {
         return { 
+          pathPrefix: {
+            type: String,
+            value: '#',
+          },
           route: {
             type: Object,
+            notify: true,
           },
+          routeData: {
+            type: Object,
+            notify: true,
+          }
+        }
+      }
+
+      openGithubAuth() {
+        alert('Hello');
+      }
+
+      getBackHome() {
+        document.querySelector('graph-app').set('route.path', '/')
+      }
+
+      performCreateNewAccount() {
+        //TODO - Validate information and request service for sign-up
+        console.log(this.$.username.value)
+        console.log(this.$.password.value)
+        console.log(this.$.confirmPassword.value)
+        console.log(this.$.emailAddress.value)
+      }
+
+      isChanged(e) {
+        if (null != this.route.path && this.route.path.length > 0) {
+          console.log(e)
+          console.log(this.routeData)
         }
       }
     }
