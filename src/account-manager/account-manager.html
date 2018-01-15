@@ -14,19 +14,23 @@
   <template>
     <style is="custom-style">
       :host {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        flex-basis: 100%;
+        width: 400px;
+        margin: 3em auto 0;
+        border: solid 0.35px var(--primary-color);
+        padding: 3px 5px;
       }
+
+      iron-pages { flex-basis: 100%; }
     </style>
     <app-route route="{{route}}" 
       pattern="/:module" 
       data="{{routeData}}" 
       tail="{{subroute}}">
     </app-route>
-
-    <iron-pages selected="[[routeData.module]]" 
-      attr-for-selected="account-module"
-      fallback-selection="module-missing">
-      <div account-module="[[routeData.module]]">[[routeData.module]]....</div>
-    </iron-pages>
     
     <iron-pages selected="register" 
       attr-for-selected="account-module"

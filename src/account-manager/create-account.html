@@ -1,11 +1,36 @@
 <link rel="import" href="../../bower_components/polymer/polymer-element.html">
 
+<link rel="import" href="../../src/account-manager/account-style.html">
+
 <dom-module id="create-account">
   <template>
+
     <style>
+      :host {
+        width: 100%;
+        display: flex;
+        flex-flow: row;
+      }
+
+      .ca {
+        margin: 2px 3px;
+      }
+
+
+      .header-title {
+        font-size: 1.5em;
+        font-weight: bold;
+      }
+
+      .separator {
+        margin: 0 5px;
+        width: 100%;
+      }
     </style>
 
-    Create account
+    <div class="ca header-title">Create account</div>
+    <div class="ca description">Login with github's account</div>
+    
 
   </template>
   <script>
