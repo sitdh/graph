@@ -34,7 +34,7 @@
       .separator {
         padding-bottom: 10px;
         margin-bottom: 10px;
-        border-bottom: 0.35px solid var(--primary-color);
+        border-bottom: 0.35px solid var(--secondary-color);
       }
 
       .input-field {
@@ -73,28 +73,30 @@
     <div class="ca header-title">Create account</div>
     <div class="ca description separator">Already have account exist? <a href="[[pathPrefix]][[route.prefix]]" on-tap="openGithubAuth">Let's signin</a></div>
 
-    <paper-input id="username" label="Username" class="input-field">
-      <iron-icon icon="perm-identity" slot="prefix"></iron-icon>
-    </paper-input>
+    <form name="signup">
+      <paper-input id="username" label="Username" class="input-field">
+        <iron-icon icon="perm-identity" slot="prefix"></iron-icon>
+      </paper-input>
 
-    <paper-input id="password" label="Password" type="password" class="input-field">
-      <iron-icon icon="star" slot="prefix"></iron-icon>
-    </paper-input>
+      <paper-input id="password" label="Password" type="password" class="input-field">
+        <iron-icon icon="star" slot="prefix"></iron-icon>
+      </paper-input>
 
-    <paper-input id="confirmPassword" label="Confirm Password" type="password" class="input-field">
-      <iron-icon icon="star" slot="prefix"></iron-icon>
-    </paper-input>
+      <paper-input id="confirmPassword" label="Confirm Password" type="password" class="input-field">
+        <iron-icon icon="star" slot="prefix"></iron-icon>
+      </paper-input>
 
-    <paper-input id="emailAddress" label="Email Address" class="input-field">
-      <iron-icon icon="mail" slot="prefix"></iron-icon>
-    </paper-input>
+      <paper-input id="emailAddress" label="Email Address" class="input-field">
+        <iron-icon icon="mail" slot="prefix"></iron-icon>
+      </paper-input>
 
-    <div class="separator"></div>
+      <div class="separator"></div>
 
-    <div class="action-section">
-      <paper-button id="cancelPressed" raised class="secondary" on-tap="getBackHome">Cancel</paper-button>
-      <paper-button id="registerPressed" raised class="primary" on-tap="performCreateNewAccount">Register</paper-button>
-    </div>
+      <div class="action-section">
+        <paper-button id="cancelPressed" raised class="secondary" on-tap="getBackHome">Cancel</paper-button>
+        <paper-button id="registerPressed" raised class="primary" on-tap="performCreateNewAccount">Register</paper-button>
+      </div>
+    </form>
 
   </template>
   <script>

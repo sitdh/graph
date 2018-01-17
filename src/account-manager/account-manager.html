@@ -20,8 +20,15 @@
         flex-basis: 100%;
         width: 400px;
         margin: 3em auto 0;
-        border: solid 0.35px var(--primary-color);
+        border: solid 0.35px var(--secondary-color);
         padding: 3px 5px;
+        box-shadow: 2px 3px 10px 0 var(--secondary-color);
+      }
+
+      .separator {
+        padding-bottom: 10px;
+        margin-bottom: 10px;
+        border-bottom: 0.35px solid var(--secondary-color);
       }
 
       iron-pages { flex-basis: 100%; }
@@ -31,11 +38,11 @@
       data="{{routeData}}" 
       tail="{{subroute}}">
     </app-route>
-    
-    <iron-pages selected="register" 
+
+    <iron-pages selected="[[routeData.module]]" 
       attr-for-selected="account-module"
       fallback-selection="module-missing">
-      <create-account account-module="register" route="{{subroute}}"></create-account>
+      <create-account account-module="register" route="[[subroute]]"></create-account>
       <user-signin account-module="signin" route="[[subroute]]"></user-signin>
       <module-missing account-module="module-missing" route="[[subroute]]"></module-missing>
     </iron-pages>
