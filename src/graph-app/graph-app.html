@@ -226,11 +226,11 @@
       }
 
       openSignin(e) {
-        this.set('route.path', '/account/signin')
+        document.querySelector('graph-app').set('route.path', '/account/signin')
       }
 
       openRegistration(e) {
-        this.set('route.path', '/account/register')
+        document.querySelector('graph-app').set('route.path', '/account/register')
       }
 
     }
