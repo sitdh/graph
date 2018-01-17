@@ -28,6 +28,7 @@
 <link rel="import" href="../../bower_components/neon-animation/animations/fade-out-animation.html">
 
 <link rel="import" href="../../src/account-manager/account-manager.html">
+<link rel="import" href="../../src/account-manager/user-home.html">
 
 <dom-module id="graph-app">
   <template>
@@ -63,6 +64,10 @@
       app-toolbar a:visited {
         text-decoration: none;
         color: white;
+      }
+
+      paper-button {
+        text-transform: none;
       }
 
       /** Responsive **/
@@ -153,6 +158,7 @@
 
         <div class="app-content">
           <iron-pages selected="[[routeData.module]]" attr-for-selected="account-page">
+            <user-home account-page="home" route="[[subroute]]"></user-home>
             <account-manager account-page="account" route="[[subroute]]"></account-manager>
           </iron-pages>
         </div>

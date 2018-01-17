@@ -1,0 +1,47 @@
+<link rel="import" href="../../../bower_components/polymer/polymer-element.html">
+
+<link rel="import" href="../../../bower_components/paper-button/paper-button.html">
+
+<dom-module id="graph-button-github">
+	<template>
+		<style>
+			:host {
+				display: flex;
+				justify-content: center;
+				color: white;
+			}
+
+			img {
+				display: block;
+				width: 25px;
+				height: 25px;
+				margin-right: 10px;
+			}
+
+			paper-button {
+				background-color: var(--secondary-color);
+				text-transform: none;
+			}
+		</style>
+
+		<paper-button>
+			<slot name="github-icon">
+				<img src="../../src/graph-ui/resources/images/github-logo.svg" alt="Github">
+			</slot>
+			<slot name="button-description">
+				Sign-in with Github
+			</slot>
+		</paper-button>
+	
+	</template>
+	<script>
+		class GraphButtonGithub extends Polymer.Element {
+			static get is() { return 'graph-button-github'; }
+			static get properties() { 
+				return {}; 
+			}
+		}
+	
+		window.customElements.define(GraphButtonGithub.is, GraphButtonGithub);
+	</script>
+</dom-module>

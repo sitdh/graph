@@ -10,7 +10,9 @@
 
 <link rel="import" href="../../src/account-manager/account-style.html">
 
-<link rel="import" href="../../src/graph-app/graph-button/graph-github.html">
+<link rel="import" href="../../src/graph-ui/graph-button/graph-button-github.html">
+
+<link rel="import" href="../../bower_components/polymerfire/firebase.html">
 
 <dom-module id="user-signin">
   <template>
@@ -62,6 +64,10 @@
         background-color: var(--secondary-color);
         color: white;
       }
+
+      .cc {
+        text-align: center;
+      }
     </style>
 
     <app-route route="{{route}}" 
@@ -70,8 +76,15 @@
       tail="{{subroute}}">
     </app-route>
 
-    <div class="ca header-title">Create account</div>
-    <div class="ca description separator">Already have account exist? <a href="[[pathPrefix]][[route.prefix]]" on-tap="openGithubAuth">Let's signin</a></div>
+    <firebase-auth id="auth" user="user" provider="github" on-error="errorHandlering"></firebase-auth>
+
+    <div class="ca header-title">Sign-in</div>
+    <div class="ca description separator">
+      <!-- Already have account exist? <a href="[[pathPrefix]][[route.prefix]]" on-tap="openGithubAuth">Let's signin</a> -->
+      <graph-button-github on-tap="signinWithGithub"></graph-button-github>
+    </div>
+
+    <div class="cc separator">Or</div>
 
     <form name="signup">
       <paper-input id="username" label="Username" class="input-field">
@@ -82,17 +95,20 @@
         <iron-icon icon="star" slot="prefix"></iron-icon>
       </paper-input>
 
-      <div class="separator"></div>
-
-        <paper-button id="githubAuthPressed" raised class="primary" on-tap="githubAuthPressed">
-          Github
+      <div class="action-section">
+        <paper-button raised 
+          id="cancelPressed" 
+          class="secondary" 
+          on-tap="getBackHome">
+          Cancel
         </paper-button>
 
-      <div class="separator"></div>
-
-      <div class="action-section">
-        <paper-button id="cancelPressed" raised class="secondary" on-tap="getBackHome">Cancel</paper-button>
-        <paper-button id="registerPressed" raised class="primary" on-tap="performCreateNewAccount">Register</paper-button>
+        <paper-button raised 
+          id="registerPressed" 
+          class="primary" 
+          on-tap="performCreateNewAccount">
+          Register
+        </paper-button>
       </div>
     </form>
 
@@ -106,6 +122,10 @@
             type: Object,
           },
         }
+      }
+      
+      signinWithGithub(e) {
+        console.log('hello')
       }
     }
 

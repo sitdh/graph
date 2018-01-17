@@ -1,0 +1,83 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+
+<link rel="import" href="../../bower_components/app-route/app-route.html">
+
+<link rel="import" href="../../bower_components/polymerfire/firebase.html">
+<link rel="import" href="../../bower_components/polymerfire/firebase-auth.html">
+
+<dom-module id="user-home">
+  <template>
+    <style>
+      :host {
+        display: flex;
+        flex-basis: 100%;
+        flex-direction: column;
+      }
+      .hero-section {
+        min-height: 15em;
+        background: #fff url("http://via.placeholder.com/1200x240") no-repeat top right;
+        background-size: cover;
+      }
+    </style>
+
+    <app-route route="{{route}}" 
+      pattern="/:module" 
+      data="{{routeData}}" 
+      tail="{{subroute}}">
+    </app-route>
+
+    <firebase-auth id="auth" 
+      user="{{user}}" 
+      provider="github" 
+      on-error="errorHandling">
+    </firebase-auth>
+  
+    <div class="hero-section">
+      hello
+    </div>
+
+    <ul>
+      <li>Overview</li>
+      <li>Listing project [Clickable]</li>
+    </ul>
+  
+  </template>
+  <script>
+    class UserHomeElement extends Polymer.Element {
+      static get is() { return 'user-home'; }
+      static get properties() { 
+        return {
+          route: {
+            type: Object,
+          },
+          subroute: {
+            type: Object,
+          },
+          routeData: {
+            type: Object,
+          },
+          user: {
+            type: Object,
+            observer: 'updateUser',
+          }
+        }
+      }
+
+      updateUser(e) {
+        console.log(e)
+      }
+
+      errorHandling(e) {
+        console.log(e)
+      }
+
+      heroImage(userImage, placeholderImg) {
+        var a = (null === userImage) ? placeholderImg : userImage ;
+        console.log(a)
+        return null == userImage ? placeholderImg : userImage;
+      }
+    }
+  
+    window.customElements.define(UserHomeElement.is, UserHomeElement);
+  </script>
+</dom-module>
